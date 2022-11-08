@@ -1,11 +1,18 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
 import TabsPage from '../views/Tabs.vue'
+import PondsPage from '../views/PondsPage.vue'
+import HomePage from '../views/HomePage.vue'
+import PondsRegistration from '../views/PondRegistration.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     redirect: '/tabs/tab1'
+  },
+  {
+    path: '/newpond', 
+    component: PondsRegistration
   },
   {
     path: '/tabs/',
@@ -17,11 +24,11 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'tab1',
-        component: () => import('@/views/HomePage.vue')
+        component: () => HomePage
       },
       {
         path: 'tab2',
-        component: () => import('@/views/PondsPage.vue')
+        component: () => PondsPage
       }
     ]
   }
