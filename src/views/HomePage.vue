@@ -154,19 +154,13 @@
         -->
 
     </ion-content>
-
-    <ion-footer collapse="fade">
-      <ion-toolbar>
-        <ion-title>
-          Home
-        </ion-title>
-      </ion-toolbar>
-    </ion-footer>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonicSlides, IonImg } from '@ionic/vue';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonicSlides, IonImg, 
+  IonGrid, IonRow, IonCol, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonText
+} from '@ionic/vue';
 import { defineComponent } from 'vue';
 import 'swiper/css';
 import '@ionic/vue/css/ionic-swiper.css';
@@ -177,14 +171,9 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 export default defineComponent({
   name: 'HomePage',
   components: {
-    IonContent,
-    IonHeader,
-    IonPage,
-    IonTitle,
-    IonToolbar,
-    IonImg,
-    Swiper, 
-    SwiperSlide
+    IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonImg,
+    Swiper, SwiperSlide, IonGrid, IonRow, IonCol, IonCard, IonCardContent, 
+    IonCardHeader, IonCardTitle, IonText
   },
   setup() {
     // Optional parameters to pass to the swiper instance. See https://swiperjs.com/swiper-api for valid options.

@@ -65,7 +65,7 @@
 <script lang="ts">
 import {
   IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonListHeader, IonCard,
-  IonCardContent, IonGrid, IonRow, IonCol, IonItem, IonFab, IonFabButton, IonIcon
+  IonCardContent, IonGrid, IonRow, IonCol, IonItem, IonFab, IonFabButton, IonIcon, IonButton
 }
   from '@ionic/vue';
 
@@ -79,7 +79,8 @@ export default defineComponent({
   name: 'PondsPage',
   components: {
     IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonListHeader,
-    IonCard, IonCardContent, IonGrid, IonRow, IonCol, IonItem, IonFab, IonFabButton, IonIcon
+    IonCard, IonCardContent, IonGrid, IonRow, IonCol, IonItem, IonFab, IonFabButton, IonIcon, 
+    IonButton
   },
   setup() {
     return {

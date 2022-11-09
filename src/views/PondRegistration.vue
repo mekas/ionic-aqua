@@ -22,7 +22,7 @@
           </ion-row>
           <ion-row>
             <ion-col>
-              <ion-input placeholder="Kolam 1">
+              <ion-input v-model="name" placeholder="Kolam 1" :autofocus="true">
               </ion-input>
             </ion-col>
           </ion-row>
@@ -33,7 +33,7 @@
           </ion-row>
           <ion-row>
             <ion-col>
-              <ion-input placeholder="Blok A">
+              <ion-input v-model="location" placeholder="Blok A">
               </ion-input>
             </ion-col>
           </ion-row>
@@ -44,10 +44,8 @@
           </ion-row>
           <ion-row>
             <ion-col>
-              <ion-select placeholder="Tanah">
-                <ion-select-option value="tanah">Tanah</ion-select-option>
-                <ion-select-option value="beton">Beton</ion-select-option>
-                <ion-select-option value="bundar">Bundar</ion-select-option>
+              <ion-select v-model="material" placeholder="Beton">
+                <ion-select-option v-for="option in material_options" :key="option.key">{{option.text}}</ion-select-option>
               </ion-select>
             </ion-col>
           </ion-row>
@@ -58,15 +56,18 @@
           </ion-row>
           <ion-row>
             <ion-col>
-              <ion-select placeholder="Kotak">
-                <ion-select-option value="kotak">Kotak</ion-select-option>
-                <ion-select-option value="bundar">Bundar</ion-select-option>
-              </ion-select>
+              <ion-select v-model="shape" placeholder="Bundar">
+                <ion-select-option v-for="option in shape_options" :key="option.key">{{option.text}}</ion-select-option>              </ion-select>
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col>
-              <ion-button color="success" class="top" expand="block">Daftar</ion-button>
+              <ion-button @click="save" color="success">Daftar</ion-button>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              {{name}}
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -85,24 +86,39 @@
   
 <script lang="ts">
 import {
-  IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonCol
+  IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonCol, IonInput, IonSelect, IonButton, 
+  IonSelectOption, IonLabel
 }
   from '@ionic/vue';
-
-import {
-  add
-} from 'ionicons/icons'
 
 import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'PondRegistration',
   components: {
-    IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonCol
+    IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonCol, IonInput, IonSelect, 
+    IonLabel, IonButton, IonSelectOption
   },
-  setup() {
+  data() {
     return {
-      add
+      name: 'eka',
+      location: '',
+      material: '',
+      material_options: [
+        { text: 'Tanah', key: 1 },
+        { text: 'Beton', key: 2 },
+        { text: 'Bundar', key: 3 }
+      ], 
+      shape: '',
+      shape_options: [
+        { text: 'Kotak', key: 1}, 
+        { text: 'Bundar', key: 2}
+      ]
+    }
+  },
+  methods: {
+    save(ev : Event){
+      console.log(`Hello ${this.name}!`)
     }
   }
 });
@@ -111,7 +127,7 @@ export default defineComponent({
 <style scoped>
 ion-button {
   width: 100%;
-  padding-right: 16px;
+  padding-right: 8px;
 }
 
 ion-card {
@@ -123,7 +139,6 @@ ion-card {
 }
 
 .top {
-  position: absolute;
   top: 0px
 }
 
