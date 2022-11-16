@@ -45,7 +45,8 @@
           <ion-row>
             <ion-col>
               <ion-select v-model="material" placeholder="Beton">
-                <ion-select-option v-for="option in material_options" :key="option.key">{{option.text}}</ion-select-option>
+                <ion-select-option v-for="option in material_options" :key="option.key">{{ option.text }}
+                </ion-select-option>
               </ion-select>
             </ion-col>
           </ion-row>
@@ -57,17 +58,13 @@
           <ion-row>
             <ion-col>
               <ion-select v-model="shape" placeholder="Bundar">
-                <ion-select-option v-for="option in shape_options" :key="option.key">{{option.text}}</ion-select-option>              </ion-select>
+                <ion-select-option v-for="option in shape_options" :key="option.key">{{ option.text }}</ion-select-option>
+              </ion-select>
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col>
               <ion-button @click="save" color="success">Daftar</ion-button>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>
-              {{name}}
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -86,39 +83,52 @@
   
 <script lang="ts">
 import {
-  IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonCol, IonInput, IonSelect, IonButton, 
+  IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonCol, IonInput, IonSelect, IonButton,
   IonSelectOption, IonLabel
 }
   from '@ionic/vue';
 
+import { Storage } from '@ionic/storage';
+//import VueResource from 'vue-resource';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'PondRegistration',
   components: {
-    IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonCol, IonInput, IonSelect, 
+    IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonCol, IonInput, IonSelect,
     IonLabel, IonButton, IonSelectOption
   },
   data() {
     return {
-      name: 'eka',
+      name: '',
       location: '',
       material: '',
       material_options: [
         { text: 'Tanah', key: 1 },
         { text: 'Beton', key: 2 },
         { text: 'Bundar', key: 3 }
-      ], 
+      ],
       shape: '',
       shape_options: [
-        { text: 'Kotak', key: 1}, 
-        { text: 'Bundar', key: 2}
+        { text: 'Kotak', key: 1 },
+        { text: 'Bundar', key: 2 }
       ]
     }
   },
   methods: {
-    save(ev : Event){
-      console.log(`Hello ${this.name}!`)
+    async save(ev: Event) {
+
+      var pond = {
+        'name': this.name, 'location': this.location,
+        'material': this.material, 'shape': this.shape
+      }
+      //console.log(pond)
+      const store = new Storage();
+      store.create();
+      store.set('Pond', pond)
+
+      var pond_copy = await store.get('Pond')
+      console.log(pond_copy)
     }
   }
 });
