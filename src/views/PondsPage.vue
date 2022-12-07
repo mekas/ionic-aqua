@@ -14,25 +14,29 @@
       </ion-header>
 
       <ion-fab vertical="bottom" horizontal="end" slot="fixed" router-link="/newpond">
-          <ion-fab-button>
+        <ion-fab-button>
           <ion-icon :icon="add"></ion-icon>
         </ion-fab-button>
       </ion-fab>
       <div>
-        <ion-list>
-          <ion-list-header>
-            <h1>Kolam</h1>
-          </ion-list-header>
+        <h1>Kolam</h1>
+        <!--
+          You can swap pondAct which defined with nested mounted or pondAct2 which we nested axios get
+         -->
+        <ion-list v-for="pond in pondAct" :key="pond._id">
           <ion-item>
             <ion-card color="dark">
               <ion-card-content>
                 <ion-grid>
+                  {{ pond  }}
                   <ion-row class="ion-justify-content-between separator">
                     <ion-col size="3">
-                      <h1>Alpha</h1>
+                      <h1>{{ pond.alias }}</h1>
                     </ion-col>
                     <ion-col size="2">
-                      <ion-button color="success" class="top">Aktif</ion-button>
+                      <div>
+                        <ion-button color="success" class="top">Aktif</ion-button>
+                      </div>
                     </ion-col>
                   </ion-row>
                   <ion-row>
@@ -48,9 +52,9 @@
               </ion-card-content>
             </ion-card>
           </ion-item>
+
         </ion-list>
 
-        
         <!--
         <strong>Ready to create an app?</strong> 
           <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
@@ -64,7 +68,7 @@
 
 <script lang="ts">
 import {
-  IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonListHeader, IonCard,
+  IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonCard,
   IonCardContent, IonGrid, IonRow, IonCol, IonItem, IonFab, IonFabButton, IonIcon, IonButton
 }
   from '@ionic/vue';
@@ -72,20 +76,75 @@ import {
 import {
   add
 } from 'ionicons/icons'
-
-import { defineComponent } from 'vue';
+import axios from 'axios'
+import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
   name: 'PondsPage',
   components: {
-    IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonListHeader,
-    IonCard, IonCardContent, IonGrid, IonRow, IonCol, IonItem, IonFab, IonFabButton, IonIcon, 
+    IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList,
+    IonCard, IonCardContent, IonGrid, IonRow, IonCol, IonItem, IonFab, IonFabButton, IonIcon,
     IonButton
   },
   setup() {
+    const API = "http://jft.web.id/fishapi/api/"
     return {
-      add
+      add, API
     }
+  },
+  data() {
+    return { ponds: [], err: Object(), pondAct: [], ponds2: [], pondAct2: this.loadPondsByActivationsV2() }
+  },
+  async mounted() {
+    this.ponds = await this.loadPonds()
+    for (const pond of this.ponds) {
+      let act = await this.loadPondActivations(pond['_id'])
+      this.pondAct.push({ ...pond, ...act })
+    }
+
+  }
+  , methods: {
+    async loadPondActivations(id: string) {
+      let api_path = this.API + "ponds/status/" + id
+      let activation = await axios.get(api_path);
+      return activation.data
+    },
+    async loadPonds() {
+      let api_path = this.API + "ponds"
+      let ponds = await axios.get(api_path)
+      return ponds.data
+    },
+    loadPondsByActivationsV2() {
+      let api_path = this.API + "ponds"
+      axios.get(api_path)
+        .then(response => {
+          // handle success
+          this.ponds2 = response.data
+          for (const pond of this.ponds2) {
+            let api2 = this.API + "ponds/status/" + pond._id
+            this.pondAct2 = []
+            axios.get(api2)
+              .then(response2 => {
+                this.pondAct2.push(response2.data)
+              }).catch(error2 => {
+                console.log(error2.data)
+              })
+            }
+          return this.pondAct2
+        })
+        .catch(error => {
+          // handle error
+          //console.log(error.data);
+          this.err['err_pond'] = error.data
+        })
+        .finally(function () {
+          // always executed
+
+        });
+    },
+    dayEllapsed(date: any) {
+      //console.log(msg)
+    },
   }
 });
 </script>

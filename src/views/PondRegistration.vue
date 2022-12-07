@@ -58,7 +58,8 @@
           <ion-row>
             <ion-col>
               <ion-select v-model="shape" placeholder="Bundar">
-                <ion-select-option v-for="option in shape_options" :key="option.key">{{ option.text }}</ion-select-option>
+                <ion-select-option v-for="option in shape_options" :key="option.key">{{ option.text }}
+                </ion-select-option>
               </ion-select>
             </ion-col>
           </ion-row>
@@ -89,7 +90,6 @@ import {
   from '@ionic/vue';
 
 import { Storage } from '@ionic/storage';
-//import VueResource from 'vue-resource';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -126,7 +126,7 @@ export default defineComponent({
       const store = new Storage();
       store.create();
       store.set('Pond', pond)
-
+      
       var pond_copy = await store.get('Pond')
       console.log(pond_copy)
     }
